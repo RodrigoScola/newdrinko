@@ -30,15 +30,25 @@ export const signInWithGoogle = async () => {
 };
 export const firestore = getFirestore();
 
-export const writeDoc = async (data) => {
-  const res = await setDoc(doc(firestore, "userInfo", data.uid), data);
+export const writeDoc = async (uid, data) => {
+  const docRef = doc(firestore, `userInfo/${uid}`);
+  setDoc(docRef, data, { merge: true });
+  const mysnapshot = await getDoc(docRef);
+  return mysnapshot.data();
 };
 export const getUserInfo = async (uid) => {
+  if (uid == null) {
+    return uid;
+  }
   const docRef = doc(firestore, "userInfo", uid);
   const mysnapshot = await getDoc(docRef);
   if (mysnapshot.exists) {
-    const docdata = await mysnapshot.data();
-    return docdata;
+    return mysnapshot.data();
   }
+};
+export const newUser = async (uid, data) => {
+  const docRef = doc(firestore, `userInfo/${uid}`);
+  setDoc(docRef, data);
+  return data;
 };
 export const auth = app.auth();

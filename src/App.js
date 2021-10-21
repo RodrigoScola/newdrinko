@@ -7,13 +7,12 @@ import { Feed } from "./Components/Pages/Feed";
 import { Config } from "./Components/Pages/Config";
 import { auth, getUserInfo } from "./utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { defaultInfo } from "./utils/user";
 import { TestComponent } from "./Components/Pages/Test";
 
 const App = () => {
-  var [user] = useAuthState(auth);
+  var [userId] = useAuthState(auth) || null;
 
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState();
 
   const [userPage, setPage] = useState("main");
   const setUserPage = (page) => {
@@ -21,13 +20,13 @@ const App = () => {
       case "main":
         return (
           <MainPage
-            setCurrentUser={setCurrentUser}
-            uid={user}
+            userId={userId}
             user={currentUser}
+            setCurrentUser={setCurrentUser}
           />
         );
-      case "profile":
-        return <Profile user={user} />;
+      // case "profile":
+      //   return <Profile user={userId} />;
       case "feed":
         return <Feed />;
       case "config":
@@ -36,10 +35,25 @@ const App = () => {
         return <TestComponent />;
     }
   };
-  if (user) {
-    user = user.multiFactor.user.uid;
-
-    return <div>{setUserPage(userPage)}</div>;
+  if (userId) {
+    switch (userPage) {
+      case "main":
+        return (
+          <MainPage
+            userId={userId}
+            user={currentUser}
+            setCurrentUser={setCurrentUser}
+          />
+        );
+      // case "profile":
+      //   return <Profile user={userId} />;
+      case "feed":
+        return <Feed />;
+      case "config":
+        return <Config />;
+      case "test":
+        return <TestComponent />;
+    }
   } else {
     return (
       <LoginPage

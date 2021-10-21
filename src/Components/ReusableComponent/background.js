@@ -1,9 +1,9 @@
 import react from "react";
-import "./styles.css";
+import "../../Components/styles/styles.css";
 
 export const Background = (props) => {
   return (
-    <div className="body">
+    <div>
       <div className="banner-text">{props.children}</div>
       <div className="animation-area">
         <ul className="box-Area">
