@@ -1,4 +1,4 @@
-import react, { useRef } from "react";
+import react, { useRef, useState } from "react";
 import "../styles/pages.css";
 import { writeDoc } from "../../utils/firebase";
 
@@ -7,29 +7,52 @@ export const CircleComponent = ({
   waterConsumption,
   setWaterConsumption,
 }) => {
+  const [disableButtons, setDisableButtons] = useState(false);
+  const twentyFourHours = 86400000;
+  const message = <h3>voce atingiu seu consumo diario</h3>;
   const intervalRef = useRef(null);
   const sendResultsTimeout = useRef(null);
-
+  console.log(user.waterComsumption.lastAltered);
   const sendResultsFunc = () => {
     sendResultsTimeout.current = setTimeout(() => {
+      if (Date.now() - twentyFourHours >= user.waterComsumption.lastAltered) {
+        if (user.streak.currentStreak > user.streak.bestStreak) {
+          user.streak.bestStreak = user.streak.currentStreak;
+        }
+      } else if (
+        Date.now() - twentyFourHours / 2 >= user.waterComsumption.lastAltered &&
+        waterConsumption < 10
+      ) {
+        user.streak.currentStreak += 1;
+        // calculate that the consumption resets
+
+        if (user.streak.currentStreak <= user.streak.bestStreak) {
+          user.streak.bestStreak += 1;
+        }
+      }
       writeDoc(user.uid, {
         waterComsumption: {
           currentComsumption: waterConsumption,
+          lastAltered: Date.now(),
+        },
+        streak: {
+          bestStreak: user.streak.bestStreak,
+          currentStreak: user.streak.currentStreak,
         },
       });
     }, 4000);
   };
   const downWater = () => {
-    if (intervalRef.current) return;
+    if (intervalRef.current || waterConsumption < 10) return;
     intervalRef.current = setInterval(() => {
-      setWaterConsumption((currCount) => currCount - 5);
+      setWaterConsumption((currCount) => currCount - 6);
     }, 60);
   };
 
   const upWater = () => {
-    if (intervalRef.current) return;
+    if (intervalRef.current || waterConsumption < 10) return;
     intervalRef.current = setInterval(() => {
-      setWaterConsumption((currCount) => currCount + 5);
+      setWaterConsumption((currCount) => currCount + 2);
     }, 60);
   };
   const stopCounter = () => {
@@ -43,10 +66,11 @@ export const CircleComponent = ({
   return (
     <div>
       <div className="box-container">
-        <h2>{waterConsumption}</h2>
+        <h2>{waterConsumption > 10 ? waterConsumption : message}</h2>
       </div>
       <div className="flexContainer">
         <button
+          disabled={disableButtons}
           onMouseDown={() => {
             downWater();
           }}
@@ -61,6 +85,7 @@ export const CircleComponent = ({
           -
         </button>
         <button
+          disabled={disableButtons}
           onMouseDown={() => {
             upWater();
           }}

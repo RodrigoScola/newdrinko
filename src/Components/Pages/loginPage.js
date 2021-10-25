@@ -1,10 +1,15 @@
 import React from "react";
 import { signInWithGoogle, writeDoc } from "../../utils/firebase";
+import { Background } from "../ReusableComponent/background";
 
 export const LoginPage = ({ user, page, setPage }) => {
   return (
-    <div>
+    <Background>
+      <header>
+        <h1>Drinko</h1>
+      </header>
       <button
+        className="btn btn-outline-primary"
         onClick={() =>
           signInWithGoogle().then((res) => {
             setTimeout(() => {
@@ -13,8 +18,8 @@ export const LoginPage = ({ user, page, setPage }) => {
           })
         }
       >
-        hello ere
+        Login With Google
       </button>
-    </div>
+    </Background>
   );
 };

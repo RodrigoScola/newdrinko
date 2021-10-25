@@ -10,11 +10,18 @@ import { Navbar } from "../ReusableComponent/navBar";
 
 export const MainPage = ({ user, userId, setCurrentUser, page, setPage }) => {
   const [waterConsumption, setWaterConsumption] = useState(123);
+  const twentyFourHours = 86400000;
   useEffect(async () => {
     const userinformation = userId.multiFactor.user;
     const userInfo = await getUserInfo(userinformation.uid).then((res) => {
       setCurrentUser(res);
       setWaterConsumption(res.waterComsumption.currentComsumption);
+      if (
+        Date.now() - twentyFourHours / 2 >=
+        res.waterComsumption.lastAltered
+      ) {
+        // calculate consumption here
+      }
       return res;
     });
     // if user doesnt exist in database, then create and set the user
@@ -24,17 +31,13 @@ export const MainPage = ({ user, userId, setCurrentUser, page, setPage }) => {
         setCurrentUser(res);
       });
     }
-    // add the write doc/set doc functionality where it alters the users stuff
   }, []);
-
-  // const [waterConsumption, setWaterConsumption] = useState(user.waterConsumption);
 
   if (!user) {
     return <Background />;
   }
   return (
     <Background>
-      <button onClick={() => auth.signOut()}>asdf</button>
       <div className="container">
         <header>
           <h2> dia {user.streak.currentStreak}</h2>

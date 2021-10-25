@@ -1,9 +1,15 @@
-import react, { useEffect } from "react";
+import react, { useEffect, useState } from "react";
 import { Background } from "../ReusableComponent/background";
 import { getUserInfo } from "../../utils/firebase";
+import { auth } from "../../utils/firebase";
 import "../styles/pages.css";
 import { Navbar } from "../ReusableComponent/navBar";
 export const Config = ({ user, userId, setCurrentUser, page, setPage }) => {
+  const [userData, setUserData] = useState({
+    gender: "male",
+    username: user.displayName,
+    age: user.userInfo.age,
+  });
   console.log(user);
   const sendConfigInfo = async (e) => {
     e.preventDefault();
@@ -61,7 +67,14 @@ export const Config = ({ user, userId, setCurrentUser, page, setPage }) => {
               <input type="number" min={13} max={100} />
             </div>
             <div>
-              <button className="btn btn-danger">ResetInfo</button>
+              <button
+                onClick={() => {
+                  auth.signOut();
+                }}
+                className="btn btn-danger"
+              >
+                Logout
+              </button>
               <button className="btn btn-success" type="submit">
                 Confirm
               </button>
