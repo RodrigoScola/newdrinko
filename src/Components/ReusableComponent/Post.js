@@ -5,8 +5,8 @@ export const Post = ({ user, info }) => {
     <div className="post">
       {/* profile and title */}
       <header>
-        <img src={user.photoUrl} alt={user.displayname} />
-        <h5>{user.displayName}</h5>
+        <img src={user.photo} alt={user.displayname} />
+        <h5>{user.userName}</h5>
       </header>
       <div>
         <p
@@ -15,8 +15,9 @@ export const Post = ({ user, info }) => {
             paddingTop: "12px",
           }}
         >
-          so this is going to be the post that everyone sees
+          {user.title}
         </p>
+        <p>{user.description}</p>
       </div>
     </div>
   );

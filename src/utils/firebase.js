@@ -33,6 +33,21 @@ export const signInWithGoogle = async () => {
 };
 export const firestore = getFirestore();
 
+export const getUserPost = async (uid) => {
+  let docs = [];
+  const userPosts = query(
+    collection(firestore, "post"),
+    where("uid", "==", uid)
+  );
+  const querySnapshot = await getDocs(userPosts);
+  querySnapshot.forEach((item) => {
+    docs.push(item.data());
+    console.log(item.data());
+  });
+  console.log(docs);
+  return docs;
+};
+
 export const writeDoc = async (uid, data) => {
   const docRef = doc(firestore, `userInfo/${uid}`);
   setDoc(docRef, data, { merge: true });
@@ -63,8 +78,7 @@ export const queryDocuments = async (collectionName) => {
   let docs = [];
   const dataQuery = query(
     collection(firestore, collectionName),
-    where("userName", "==", "Snuffy"),
-    limit(10)
+    where("userName", "==", "Snuffy")
   );
   const querySnapshot = await getDocs(dataQuery);
   querySnapshot.forEach((item) => {
