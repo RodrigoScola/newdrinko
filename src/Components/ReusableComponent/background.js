@@ -3,7 +3,11 @@ import "../../Components/styles/styles.css";
 
 export const Background = (props) => {
   return (
-    <div>
+    <div
+      style={{
+        backgroundColor: "#3d3fac",
+      }}
+    >
       <div className="banner-text">{props.children}</div>
       <div className="animation-area">
         <ul className="box-Area">

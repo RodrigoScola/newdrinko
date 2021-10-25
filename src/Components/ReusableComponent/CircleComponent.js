@@ -22,15 +22,15 @@ export const CircleComponent = ({
   const downWater = () => {
     if (intervalRef.current) return;
     intervalRef.current = setInterval(() => {
-      setWaterConsumption((currCount) => currCount - 1);
-    });
+      setWaterConsumption((currCount) => currCount - 5);
+    }, 60);
   };
 
   const upWater = () => {
     if (intervalRef.current) return;
     intervalRef.current = setInterval(() => {
-      setWaterConsumption((currCount) => currCount + 1);
-    });
+      setWaterConsumption((currCount) => currCount + 5);
+    }, 60);
   };
   const stopCounter = () => {
     if (intervalRef.current) {

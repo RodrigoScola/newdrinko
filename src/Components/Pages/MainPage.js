@@ -1,19 +1,20 @@
 import React from "react";
 import { useEffect, useState } from "react/cjs/react.development";
-import { doc, setDoc } from "firebase/firestore";
-import { auth, firestore, newUser } from "../../utils/firebase";
-import { writeDoc, getUserInfo } from "../../utils/firebase";
+import { auth, newUser } from "../../utils/firebase";
+import { getUserInfo } from "../../utils/firebase";
 import { Background } from "../ReusableComponent/background";
 import "../styles/pages.css";
 import { CircleComponent } from "../ReusableComponent/CircleComponent";
 import { defaultInfo } from "../../utils/user";
 import { Navbar } from "../ReusableComponent/navBar";
 
-export const MainPage = ({ user, userId, setCurrentUser }) => {
+export const MainPage = ({ user, userId, setCurrentUser, page, setPage }) => {
+  const [waterConsumption, setWaterConsumption] = useState(123);
   useEffect(async () => {
     const userinformation = userId.multiFactor.user;
     const userInfo = await getUserInfo(userinformation.uid).then((res) => {
       setCurrentUser(res);
+      setWaterConsumption(res.waterComsumption.currentComsumption);
       return res;
     });
     // if user doesnt exist in database, then create and set the user
@@ -27,9 +28,7 @@ export const MainPage = ({ user, userId, setCurrentUser }) => {
   }, []);
 
   // const [waterConsumption, setWaterConsumption] = useState(user.waterConsumption);
-  const [waterConsumption, setWaterConsumption] = useState(
-    user.waterComsumption.currentComsumption
-  );
+
   if (!user) {
     return <Background />;
   }
@@ -38,7 +37,6 @@ export const MainPage = ({ user, userId, setCurrentUser }) => {
       <button onClick={() => auth.signOut()}>asdf</button>
       <div className="container">
         <header>
-          {console.log(user)}
           <h2> dia {user.streak.currentStreak}</h2>
         </header>
         {/* circle and stuff */}
@@ -49,7 +47,7 @@ export const MainPage = ({ user, userId, setCurrentUser }) => {
             setWaterConsumption={setWaterConsumption}
           />
         </div>
-        <Navbar />
+        <Navbar page={page} setPage={setPage} className="app" />
       </div>
     </Background>
   );

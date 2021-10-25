@@ -1,13 +1,16 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import {
-  addDoc,
-  collection,
   getFirestore,
   setDoc,
   doc,
-  onSnapshot,
   getDoc,
+  collection,
+  addDoc,
+  query,
+  where,
+  limit,
+  getDocs,
 } from "firebase/firestore";
 const app = firebase.initializeApp({
   apiKey: "AIzaSyBoZHU8r-kx5e7Km4cFeVfPofadrARlh1I",
@@ -51,4 +54,23 @@ export const newUser = async (uid, data) => {
   setDoc(docRef, data);
   return data;
 };
+export const addNewDocument = async (collectionName, data) => {
+  const collectionRef = collection(firestore, collectionName);
+  const newDoc = await addDoc(collectionRef, data);
+  return newDoc;
+};
+export const queryDocuments = async (collectionName) => {
+  let docs = [];
+  const dataQuery = query(
+    collection(firestore, collectionName),
+    where("userName", "==", "Snuffy"),
+    limit(10)
+  );
+  const querySnapshot = await getDocs(dataQuery);
+  querySnapshot.forEach((item) => {
+    docs.push(item.data());
+  });
+  return docs;
+};
+
 export const auth = app.auth();

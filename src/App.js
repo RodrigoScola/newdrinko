@@ -1,16 +1,17 @@
 import "./App.css";
+import "./Components/styles/pages.css";
 import React, { useState, useEffect } from "react";
 import { MainPage } from "./Components/Pages/MainPage";
 import { LoginPage } from "./Components/Pages/loginPage";
 import { Profile } from "./Components/Pages/Profile";
 import { Feed } from "./Components/Pages/Feed";
 import { Config } from "./Components/Pages/Config";
-import { auth, getUserInfo } from "./utils/firebase";
+import { auth } from "./utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { TestComponent } from "./Components/Pages/Test";
 
 const App = () => {
-  var [userId] = useAuthState(auth) || null;
+  var [userId] = useAuthState(auth);
 
   const [currentUser, setCurrentUser] = useState();
 
@@ -23,37 +24,38 @@ const App = () => {
             userId={userId}
             user={currentUser}
             setCurrentUser={setCurrentUser}
+            page={userPage}
+            setPage={setPage}
           />
         );
-      // case "profile":
-      //   return <Profile user={userId} />;
+      case "profile":
+        return (
+          <Profile
+            userId={userId}
+            user={currentUser}
+            setCurrentUser={setCurrentUser}
+            page={userPage}
+            setPage={setPage}
+          />
+        );
       case "feed":
-        return <Feed />;
+        return <Feed page={page} user={currentUser} setPage={setPage} />;
       case "config":
-        return <Config />;
+        return (
+          <Config
+            userId={userId}
+            user={currentUser}
+            setCurrentUser={setCurrentUser}
+            page={userPage}
+            setPage={setPage}
+          />
+        );
       case "test":
         return <TestComponent />;
     }
   };
   if (userId) {
-    switch (userPage) {
-      case "main":
-        return (
-          <MainPage
-            userId={userId}
-            user={currentUser}
-            setCurrentUser={setCurrentUser}
-          />
-        );
-      // case "profile":
-      //   return <Profile user={userId} />;
-      case "feed":
-        return <Feed />;
-      case "config":
-        return <Config />;
-      case "test":
-        return <TestComponent />;
-    }
+    return <div>{setUserPage(userPage)}</div>;
   } else {
     return (
       <LoginPage
