@@ -1,4 +1,4 @@
-import react from "react";
+import React from "react";
 import { ReactComponent as Settings } from "../../Images/settings.svg";
 import { ReactComponent as User } from "../../Images/user.svg";
 import { ReactComponent as Water } from "../../Images/water.svg";

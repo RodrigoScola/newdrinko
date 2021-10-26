@@ -1,4 +1,4 @@
-import react, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Background } from "../ReusableComponent/background";
 import { Navbar } from "../ReusableComponent/navBar";
 import { Post } from "../ReusableComponent/Post";

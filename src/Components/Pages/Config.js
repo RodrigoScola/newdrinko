@@ -1,4 +1,4 @@
-import react, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Background } from "../ReusableComponent/background";
 import { getUserInfo } from "../../utils/firebase";
 import { auth } from "../../utils/firebase";
