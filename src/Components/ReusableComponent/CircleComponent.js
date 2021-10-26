@@ -1,4 +1,4 @@
-import react, { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import "../styles/pages.css";
 import { writeDoc } from "../../utils/firebase";
 
@@ -9,7 +9,6 @@ export const CircleComponent = ({
 }) => {
   const [disableButtons, setDisableButtons] = useState(false);
   const twentyFourHours = 86400000;
-  const message = <h3>voce atingiu seu consumo diario</h3>;
   const intervalRef = useRef(null);
   const sendResultsTimeout = useRef(null);
   console.log(user.waterComsumption.lastAltered);
@@ -66,7 +65,7 @@ export const CircleComponent = ({
   return (
     <div>
       <div className="box-container">
-        <h2>{waterConsumption > 10 ? waterConsumption : message}</h2>
+        <h2>{waterConsumption > 10 ? waterConsumption : "hello tere"}</h2>
       </div>
       <div className="flexContainer">
         <button

@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect, useState } from "react/cjs/react.development";
+import React, { useEffect, useState } from "react";
 import { auth, newUser } from "../../utils/firebase";
 import { getUserInfo } from "../../utils/firebase";
 import { Background } from "../ReusableComponent/background";
