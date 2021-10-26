@@ -5,11 +5,11 @@
     "main.js.map": "/newdrinko/static/js/main.dfae0856.chunk.js.map",
     "runtime-main.js": "/newdrinko/static/js/runtime-main.f5239d5f.js",
     "runtime-main.js.map": "/newdrinko/static/js/runtime-main.f5239d5f.js.map",
-    "static/js/2.c1e34064.chunk.js": "/newdrinko/static/js/2.c1e34064.chunk.js",
-    "static/js/2.c1e34064.chunk.js.map": "/newdrinko/static/js/2.c1e34064.chunk.js.map",
+    "static/js/2.f9ed3257.chunk.js": "/newdrinko/static/js/2.f9ed3257.chunk.js",
+    "static/js/2.f9ed3257.chunk.js.map": "/newdrinko/static/js/2.f9ed3257.chunk.js.map",
     "index.html": "/newdrinko/index.html",
     "static/css/main.550d75b0.chunk.css.map": "/newdrinko/static/css/main.550d75b0.chunk.css.map",
-    "static/js/2.c1e34064.chunk.js.LICENSE.txt": "/newdrinko/static/js/2.c1e34064.chunk.js.LICENSE.txt",
+    "static/js/2.f9ed3257.chunk.js.LICENSE.txt": "/newdrinko/static/js/2.f9ed3257.chunk.js.LICENSE.txt",
     "static/media/feed.41758b65.svg": "/newdrinko/static/media/feed.41758b65.svg",
     "static/media/settings.139a2971.svg": "/newdrinko/static/media/settings.139a2971.svg",
     "static/media/user.1708317b.svg": "/newdrinko/static/media/user.1708317b.svg",
@@ -17,7 +17,7 @@
   },
   "entrypoints": [
     "static/js/runtime-main.f5239d5f.js",
-    "static/js/2.c1e34064.chunk.js",
+    "static/js/2.f9ed3257.chunk.js",
     "static/css/main.550d75b0.chunk.css",
     "static/js/main.dfae0856.chunk.js"
   ]
