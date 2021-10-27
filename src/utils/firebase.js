@@ -9,7 +9,6 @@ import {
   addDoc,
   query,
   where,
-  limit,
   getDocs,
 } from "firebase/firestore";
 const app = firebase.initializeApp({
@@ -44,7 +43,6 @@ export const getUserPost = async (uid) => {
     docs.push(item.data());
     console.log(item.data());
   });
-  console.log(docs);
   return docs;
 };
 
@@ -76,10 +74,7 @@ export const addNewDocument = async (collectionName, data) => {
 };
 export const queryDocuments = async (collectionName) => {
   let docs = [];
-  const dataQuery = query(
-    collection(firestore, collectionName),
-    where("userName", "==", "Snuffy")
-  );
+  const dataQuery = query(collection(firestore, collectionName));
   const querySnapshot = await getDocs(dataQuery);
   querySnapshot.forEach((item) => {
     docs.push(item.data());

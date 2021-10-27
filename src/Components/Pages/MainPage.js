@@ -1,37 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { auth, newUser } from "../../utils/firebase";
-import { getUserInfo } from "../../utils/firebase";
+import { auth, newUser, getUserInfo } from "../../utils/firebase";
 import { Background } from "../ReusableComponent/background";
 import "../styles/pages.css";
 import { CircleComponent } from "../ReusableComponent/CircleComponent";
 import { defaultInfo } from "../../utils/user";
 import { Navbar } from "../ReusableComponent/navBar";
+import { calculateComsumption } from "../../utils/user";
 
 export const MainPage = ({ user, userId, setCurrentUser, page, setPage }) => {
   const [waterConsumption, setWaterConsumption] = useState(123);
-  const twentyFourHours = 86400000;
   useEffect(async () => {
+    // gets the user information and sets it to user
     const userinformation = userId.multiFactor.user;
-    const userInfo = await getUserInfo(userinformation.uid).then((res) => {
-      setCurrentUser(res);
-      setWaterConsumption(res.waterComsumption.currentComsumption);
-      if (
-        Date.now() - twentyFourHours / 2 >=
-        res.waterComsumption.lastAltered
-      ) {
-        // calculate consumption here
-      }
-      return res;
-    });
-    // if user doesnt exist in database, then create and set the user
-    if (!userInfo) {
-      const userDefaultInformation = defaultInfo(userinformation);
-      newUser(userinformation.uid, userDefaultInformation).then((res) => {
+    await getUserInfo(userinformation.uid)
+      .then((res) => {
         setCurrentUser(res);
+        const consume = calculateComsumption(
+          res.userInfo.weight,
+          res.userInfo.age
+        );
+        setWaterConsumption(res.waterComsumption.currentComsumption);
+      })
+      .catch(() => {
+        // if user doesnt exist in database, then create and set the user
+        const userDefaultInformation = defaultInfo(userinformation);
+        newUser(userinformation.uid, userDefaultInformation).then((res) => {
+          setCurrentUser(res);
+        });
       });
-    }
   }, []);
-
+  const twentyFourHours = 86400000;
   if (!user) {
     return <Background />;
   }

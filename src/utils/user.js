@@ -1,4 +1,8 @@
 export const defaultInfo = (user) => {
+  const date = new Date();
+  const weight = 80;
+  const age = 18;
+
   return {
     displayName: user.displayName,
     uid: user.uid,
@@ -8,9 +12,9 @@ export const defaultInfo = (user) => {
       createdAt: Date.now(),
     },
     userInfo: {
-      age: 0,
+      age: age,
       heightInCentimeters: 0,
-      weight: 0,
+      weight: weight,
       gender: "male",
     },
     streak: {
@@ -20,6 +24,16 @@ export const defaultInfo = (user) => {
     waterComsumption: {
       currentComsumption: 1238,
       totalComsumtion: 1239,
+      lastAltered: Date.now(),
+      time: {
+        day: date.getDate(),
+        month: date.getMonth(),
+      },
     },
   };
+};
+export const calculateComsumption = (weight, age) => {
+  const ounced = weight * 0.67 + (50 - age);
+  const conversed = ounced * 29.57;
+  return Math.round(conversed);
 };

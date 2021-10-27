@@ -11,7 +11,6 @@ export const Profile = ({ user, userId, setCurrentUser, page, setPage }) => {
   useEffect(async () => {
     const userinformation = userId.multiFactor.user;
     getUserPost(user.uid).then((res) => {
-      console.log(res);
       setPost(res);
     });
     const userInfo = await getUserInfo(userinformation.uid).then((res) => {
@@ -23,12 +22,19 @@ export const Profile = ({ user, userId, setCurrentUser, page, setPage }) => {
   if (!post) {
     return <Background />;
   }
-  const length = post.length || 123;
-  const height = `${length * 122 * 2}px`;
+  const length = post.length || 0;
+  const height = `${length * 170}px`;
   return (
     <div style={{ height: height, backgroundColor: "#3d3fac" }}>
       <Background>
-        <header className="absolute-centered-container centered-container">
+        <header
+          style={{
+            backgroundColor: "dodgerblue",
+            padding: 12,
+            borderRadius: 12,
+          }}
+          className="absolute-centered-container centered-container"
+        >
           {/* user image, user info */}
           <img
             style={{
@@ -56,7 +62,7 @@ export const Profile = ({ user, userId, setCurrentUser, page, setPage }) => {
         </header>
         <div
           style={{
-            marginTop: "320px",
+            marginTop: "350px",
           }}
           className="centered-container"
         >

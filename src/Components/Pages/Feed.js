@@ -14,7 +14,6 @@ export const Feed = ({ user, page, setPage }) => {
       setPosts(res);
     });
   }, []);
-  console.log(user);
   const [postData, setPostData] = useState({ title: "", description: "" });
   const createPost = async (e) => {
     e.preventDefault();
@@ -26,11 +25,15 @@ export const Feed = ({ user, page, setPage }) => {
       createdAt: Date.now(),
       uid: user.uid,
     });
+    setPostData({
+      title: "asdf",
+      description: "",
+    });
   };
 
   if (posts) {
-    const length = posts.length || 123;
-    const height = `${length * 122 * 2}px`;
+    const length = posts.length;
+    const height = `${length * 160}px`;
     return (
       <div style={{ height: height, backgroundColor: "#3d3fac" }}>
         <Background>
@@ -73,10 +76,18 @@ export const Feed = ({ user, page, setPage }) => {
                 cols={50}
               ></textarea>
               <button
+                onClick={() => {
+                  setPostData({
+                    ...postData,
+                    title: "",
+                    description: "",
+                  });
+                  console.log("cs");
+                }}
                 style={{
                   marginTop: 12,
                 }}
-                className="btn btn-outline-success "
+                className="btn btn-success "
                 type="submit"
               >
                 Create post

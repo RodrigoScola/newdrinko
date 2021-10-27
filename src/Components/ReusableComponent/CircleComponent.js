@@ -1,34 +1,63 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import "../styles/pages.css";
 import { writeDoc } from "../../utils/firebase";
+import { calculateComsumption } from "../../utils/user";
+
+const ConsumeComponent = (props) => {
+  return (
+    <div
+      style={{
+        fontSize: ".5em",
+        marginTop: 12,
+      }}
+    >
+      <p>{props.message}</p>
+    </div>
+  );
+};
 
 export const CircleComponent = ({
   user,
   waterConsumption,
   setWaterConsumption,
 }) => {
-  const [disableButtons, setDisableButtons] = useState(false);
   const twentyFourHours = 86400000;
   const intervalRef = useRef(null);
   const sendResultsTimeout = useRef(null);
-  console.log(user.waterComsumption.lastAltered);
+
+  const twentyFourHoursPassed = (num = 1) => {
+    if (
+      Date.now() - twentyFourHours / num >=
+      user.waterComsumption.lastAltered
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    if (twentyFourHoursPassed(2)) {
+      setWaterConsumption(
+        calculateComsumption(user.userInfo.weight, user.userInfo.age)
+      );
+    }
+  }, []);
+
   const sendResultsFunc = () => {
     sendResultsTimeout.current = setTimeout(() => {
-      if (Date.now() - twentyFourHours >= user.waterComsumption.lastAltered) {
-        if (user.streak.currentStreak > user.streak.bestStreak) {
+      // checks if been over 24 hours since last change
+      if (twentyFourHoursPassed()) {
+        if (user.streak.currentStreak >= user.streak.bestStreak) {
           user.streak.bestStreak = user.streak.currentStreak;
         }
-      } else if (
-        Date.now() - twentyFourHours / 2 >= user.waterComsumption.lastAltered &&
-        waterConsumption < 10
-      ) {
-        user.streak.currentStreak += 1;
-        // calculate that the consumption resets
-
-        if (user.streak.currentStreak <= user.streak.bestStreak) {
-          user.streak.bestStreak += 1;
-        }
+        user.streak.currentStreak = 0;
       }
+      // checks if 12 hours since last change
+      if (!twentyFourHoursPassed(2) && waterConsumption <= 10) {
+        user.streak.currentStreak++;
+      }
+
       writeDoc(user.uid, {
         waterComsumption: {
           currentComsumption: waterConsumption,
@@ -39,12 +68,12 @@ export const CircleComponent = ({
           currentStreak: user.streak.currentStreak,
         },
       });
-    }, 4000);
+    }, 2000);
   };
   const downWater = () => {
     if (intervalRef.current || waterConsumption < 10) return;
     intervalRef.current = setInterval(() => {
-      setWaterConsumption((currCount) => currCount - 6);
+      setWaterConsumption((currCount) => currCount - 8);
     }, 60);
   };
 
@@ -65,11 +94,16 @@ export const CircleComponent = ({
   return (
     <div>
       <div className="box-container">
-        <h2>{waterConsumption > 10 ? waterConsumption : "hello tere"}</h2>
+        <h2>
+          {waterConsumption > 10 ? (
+            waterConsumption
+          ) : (
+            <ConsumeComponent message={"Consumo diario atingido"} />
+          )}
+        </h2>
       </div>
       <div className="flexContainer">
         <button
-          disabled={disableButtons}
           onMouseDown={() => {
             downWater();
           }}
@@ -84,7 +118,6 @@ export const CircleComponent = ({
           -
         </button>
         <button
-          disabled={disableButtons}
           onMouseDown={() => {
             upWater();
           }}

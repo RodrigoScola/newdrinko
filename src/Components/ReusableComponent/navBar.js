@@ -7,7 +7,14 @@ import "./../styles/pages.css";
 
 export const Navbar = ({ page, setPage }) => {
   return (
-    <div className="app">
+    <div
+      className="app"
+      style={{
+        backgroundColor: "dodgerblue",
+        padding: "12px",
+        borderRadius: "20px",
+      }}
+    >
       <button
         onClick={() => {
           setPage("main");

@@ -1,25 +1,41 @@
 import React from "react";
-import { signInWithGoogle, writeDoc } from "../../utils/firebase";
+import { signInWithGoogle } from "../../utils/firebase";
 import { Background } from "../ReusableComponent/background";
+import "../styles/pages.css";
 
-export const LoginPage = ({ user, page, setPage }) => {
+export const LoginPage = ({ setPage }) => {
   return (
     <Background>
-      <header>
-        <h1>Drinko</h1>
-      </header>
-      <button
-        className="btn btn-outline-primary"
-        onClick={() =>
-          signInWithGoogle().then((res) => {
-            setTimeout(() => {
-              setPage("main");
-            }, 400);
-          })
-        }
+      <div
+        style={{
+          marginTop: "40px",
+
+          textAlign: "center",
+        }}
+        className="container"
       >
-        Login With Google
-      </button>
+        <header>
+          <h1
+            style={{
+              fontSize: "10em",
+            }}
+          >
+            Drinko
+          </h1>
+        </header>
+        <button
+          className="btn btn-success"
+          onClick={() =>
+            signInWithGoogle().then(() => {
+              setTimeout(() => {
+                setPage("main");
+              }, 400);
+            })
+          }
+        >
+          Login With Google
+        </button>
+      </div>
     </Background>
   );
 };
